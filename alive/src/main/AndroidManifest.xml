@@ -28,10 +28,10 @@
         tools:ignore="UnusedAttribute" />
 
     <permission
-        android:name="com.keep.utility.DAEMON_BROADCAST_PERMISSIONS"
+        android:name="${applicationId}.DAEMON_BROADCAST_PERMISSIONS"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.oh.utility.DAEMON_BROADCAST_PERMISSIONS" />
+    <uses-permission android:name="${applicationId}.DAEMON_BROADCAST_PERMISSIONS" />
 
     <application>
         <provider

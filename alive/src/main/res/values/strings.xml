@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">libdaemon</string>
 
-    <string name="account_authenticator_type">com.example.supercleanercn</string>
-    <string name="account_authenticator_provide">com.example.supercleanercn.data.sync.provider</string>
-    <string name="account_authenticator_provide1">com.example.supercleanercn.datasync.provider</string>
+    <string name="account_authenticator_type">com.keep.alive</string>
+    <string name="account_authenticator_provide">com.keep.alive.data.sync.provider</string>
+    <string name="account_authenticator_provide1">com.keep.alive.datasync.provider</string>
 
 </resources>

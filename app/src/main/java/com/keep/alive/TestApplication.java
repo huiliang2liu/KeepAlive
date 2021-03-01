@@ -18,7 +18,7 @@ public class TestApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        KeepAliveInit.init();
+        KeepAliveInit.init();
     }
 
     @NotNull

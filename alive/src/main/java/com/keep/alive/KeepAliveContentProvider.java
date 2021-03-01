@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,11 +24,16 @@ public class KeepAliveContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        KeepAliveInit.init();
-        Intent intent=new Intent(KeepAliveContentProvider.context(),KeepAliveActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        KeepAliveContentProvider.context().startActivity(intent);
+//        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+                Intent intent = new Intent(KeepAliveContentProvider.context(), KeepAliveActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                KeepAliveContentProvider.context().startActivity(intent);
+//            }
+//        }, 1000);
+
         return false;
     }
 

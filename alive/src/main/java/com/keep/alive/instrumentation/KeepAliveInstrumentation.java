@@ -5,8 +5,6 @@ import android.app.Instrumentation;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.keep.alive.KeepAliveInit;
-import com.keep.alive.OhDaemon;
 
 public class KeepAliveInstrumentation extends Instrumentation {
     private static final String TAG = "EXPORT_INSTRUMENTATION";
@@ -22,6 +20,5 @@ public class KeepAliveInstrumentation extends Instrumentation {
     public void callApplicationOnCreate(Application app) {
         super.callApplicationOnCreate(app);
         Log.d(TAG, "callApplicationOnCreate()");
-        KeepAliveInit.init();
     }
 }
