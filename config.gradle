@@ -1,0 +1,6 @@
+ext{
+    sys=[compileSdkVersion:30,
+         buildToolsVersion:'30.0.2',
+         minSdkVersion:16,
+         targetSdkVersion:30]
+}

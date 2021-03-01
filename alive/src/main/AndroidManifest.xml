@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.keep.alive">
+
+    <uses-permission
+        android:name="android.permission.BIND_JOB_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- Account -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <uses-permission
+        android:name="android.permission.MANAGE_ACCOUNTS"
+        android:maxSdkVersion="22" />
+
+    <!-- process daemon -->
+    <instrumentation
+        android:name=".instrumentation.KeepAliveInstrumentation"
+        android:targetPackage="${applicationId}"
+        android:targetProcesses="*"
+        tools:ignore="UnusedAttribute" />
+
+    <permission
+        android:name="com.keep.utility.DAEMON_BROADCAST_PERMISSIONS"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.oh.utility.DAEMON_BROADCAST_PERMISSIONS" />
+
+    <application>
+        <provider
+            android:authorities="${applicationId}.KeepContentProvider"
+            android:name=".KeepAliveContentProvider"
+            android:exported="false"/>
+        <!-- main -->
+        <service
+            android:name=".base.DaemonService"
+            android:process=":service"
+            tools:ignore="ExportedService" />
+<!--        <activity android:name=".KeepAliveActivity"-->
+<!--            android:permission=":alive"-->
+<!--            android:theme="@style/noAnimation"/>-->
+
+        <receiver
+            android:name=".base.DaemonReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":service">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+                <action android:name="android.intent.action.PHONE_STATE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- account -->
+        <provider
+            android:name=".syncaccount.base.AccountProvider"
+            android:authorities="@string/account_authenticator_provide"
+            android:exported="false"
+            android:process=":service"
+            android:syncable="true"
+            tools:ignore="ExportedContentProvider" />
+
+        <service
+            android:name=".syncaccount.base.SyncService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":service"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/account_sync_adapter" />
+        </service>
+
+        <service
+            android:name=".syncaccount.base.SyncService1"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":service"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/account_sync_adapter1" />
+        </service>
+
+        <service
+            android:name=".syncaccount.base.AuthService"
+            android:process=":service"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/account_authenticator" />
+        </service>
+
+        <!-- job scheduler -->
+        <service
+            android:name=".jobscheduler.KLJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":service" />
+
+        <!-- process daemon -->
+        <service
+            android:name=".daemon.process.DaemonService"
+            android:process=":daemon" />
+
+        <service
+            android:name=".daemon.process.AssistService"
+            android:process=":assist" />
+
+        <service
+            android:name=".daemon.process.PartnerService"
+            android:process=":partner" />
+
+        <service
+            android:name=".daemon.export.ExportService"
+            android:exported="true"
+            android:process=":service"
+            tools:ignore="ExportedService" />
+
+        <receiver
+            android:name=".daemon.export.ExportReceiver"
+            android:exported="true"
+            android:process=":service"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.oh.utility.broadcast.EXPORT_BROADCAST" />
+            </intent-filter>
+        </receiver>
+
+        <!-- other -->
+        <service
+            android:name=".grayservice.GrayService"
+            android:process=":service" />
+
+        <receiver
+            android:name=".alarm.AlarmReceiver"
+            android:exported="true"
+            android:process=":service"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="Permanent.AlarmAction" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Tile -->
+        <service
+            android:name=".tile.OhTileService"
+            android:icon="@mipmap/tile_boost"
+            android:label="手机加速"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":service">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+        <activity
+            android:name=".KeepAliveActivity"
+            android:excludeFromRecents="true"
+            android:process=":service"
+            android:screenOrientation="portrait"
+            android:taskAffinity=":keep"
+            android:theme="@style/noAnimation"
+            tools:ignore="LockedOrientationActivity" />
+    </application>
+
+</manifest>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">KeepAlive</string>
+    <string name="account_authenticator_type">com.oh.app.daemon</string>
+    <string name="account_authenticator_provide">com.oh.app.daemon.data.sync.provider</string>
+    <string name="account_authenticator_provide1">com.oh.app.daemon.datasync.provider</string>
+
+</resources>
