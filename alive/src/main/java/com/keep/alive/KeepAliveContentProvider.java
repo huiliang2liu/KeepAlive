@@ -22,26 +22,11 @@ public class KeepAliveContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        Application application = (Application) getContext().getApplicationContext();
-        try {
-            Class cls = application.getClass();
-            Method method = cls.getDeclaredMethod("getBroadcastAction");
-            method.setAccessible(true);
-            String[] actions = (String[]) method.invoke(application);
-            if(actions!=null&&actions.length>0){
-                IntentFilter intentFilter=new IntentFilter();
-                for (String action:actions){
-                    intentFilter.addAction(action);
-                }
-                application.registerReceiver(new ActionBroadcastReceiver(),intentFilter);
-            }
-            Intent intent=new Intent(application,KeepAliveActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            application.startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        KeepAliveInit.init();
+        Intent intent=new Intent(KeepAliveContentProvider.context(),KeepAliveActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        KeepAliveContentProvider.context().startActivity(intent);
         return false;
     }
 

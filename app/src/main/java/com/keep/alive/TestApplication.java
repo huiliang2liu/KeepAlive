@@ -2,6 +2,8 @@ package com.keep.alive;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 
@@ -12,10 +14,11 @@ import java.util.Calendar;
 import kotlin.jvm.internal.Intrinsics;
 
 public class TestApplication extends Application {
+    private Handler handler=new Handler(Looper.getMainLooper());
     @Override
     public void onCreate() {
         super.onCreate();
-        KeepAliveApplication.init();
+//        KeepAliveInit.init();
     }
 
     @NotNull
@@ -41,17 +44,22 @@ public class TestApplication extends Application {
                     return;
                 }
                 double dx = gps2m(doubles[0], doubles[1]);
-                Log.e("TestApplication", "" + dx);
+                Log.e("TestApplication ddd", "" + dx);
                 if (dx > 300)
                     return;
-                Intent intent1 = this.getPackageManager().getLaunchIntentForPackage("com.tencent.wework");
-//            Intent intent1=new Intent(this,MainActivity.class);
-                if (intent1 != null) {
-                    Log.e("TestApplication", "dadadadadad");
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    this.startActivity(intent1);
-                } else
-                    Log.e("TestApplication", "intent1 is null");
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent1 = getPackageManager().getLaunchIntentForPackage("com.tencent.wework");
+                        if (intent1 != null) {
+                            Log.e("TestApplication", "dadadadadad");
+                            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            startActivity(intent1);
+                        } else
+                            Log.e("TestApplication", "intent1 is null");
+                    }
+                }, 1000);
+
 //            Log.e("TestApplication", "解锁");
             }
         }

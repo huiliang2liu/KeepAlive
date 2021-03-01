@@ -29,6 +29,7 @@ public class KeepAliveActivity extends Activity {
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+        KeepAliveInit.init();
         moveToBack();
     }
 

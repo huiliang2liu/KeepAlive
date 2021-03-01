@@ -4,6 +4,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+
+import com.keep.alive.KeepAliveInit;
 import com.keep.alive.daemon.receiver.AssistStartReceiver;
 import com.keep.alive.daemon.receiver.ServiceStartReceiver;
 import com.keep.alive.daemon.receiver.ServiceStartReceiver.ServiceStartListener;
@@ -16,6 +18,7 @@ public final class AssistService extends Service {
 
     public void onCreate() {
         super.onCreate();
+        KeepAliveInit.init();
         AssistStartReceiver.requestBindAction(getPackageName(), AssistService.class.getName());
         ServiceStartReceiver.register(new ServiceStartListener() {
             public void onServiceStart(@NotNull Context context) {
